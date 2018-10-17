@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Contacts HTML Client</title>
+    <title>Presidents</title>
     <link href="Content/bootstrap.css" rel="stylesheet" />
     <style type="text/css">
         body {
@@ -20,7 +20,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Contacts</a>
+                <a class="navbar-brand" href="#">Presidents</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav"></ul>
@@ -33,34 +33,34 @@
     </nav>
 
     <div class="container">
-        <!-- contacts ui here -->
-        <table class="table table-striped" ng-app="myApp" ng-controller="contactListCtrl">
+        <!-- presidents ui here -->
+        <table class="table table-striped" ng-app="myApp" ng-controller="presidentListCtrl">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Name</th>
-                    <th>Email</th>
+                    <th>Birthday</th>
+                    <th>BirthPlace</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="con in contacts">
-                    <td>{{con.Id}}</td>
+                <tr ng-repeat="con in presidents">
                     <td>{{con.Name}}</td>
-                    <td>{{con.EmailAddress}}</td>
+                    <td>{{con.Birthday}}</td>
+                    <td>{{con.BirthPlace}}</td>
                     <td><button class="btn btn-sm btn-warning" ng-click="delete(con.Id)">Delete</button></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <th>Create a new Contact</th>
+                    <th>Create a new President</th>
                     <th colspan="2">API Status: {{status}}</th>
                     <th><button class="btn btn-sm btn-info" ng-click="refresh()">Refresh</button></th>
                 </tr>
                 <tr>
-                    <td><input type="text" placeholder="ID" ng-model="newId" /></td>
                     <td><input type="text" placeholder="Name" ng-model="newName" /></td>
-                    <td><input type="text" placeholder="Email Address" ng-model="newEmail" /></td>
+                    <td><input type="text" placeholder="Birthday" ng-model="newNBirthday" /></td>
+                    <td><input type="text" placeholder="BirthPlace" ng-model="newBirthPlace" /></td>
                     <td><button class="btn btn-sm btn-success" ng-click="create()">Create</button></td>
                 </tr>
                 <tr>
@@ -73,41 +73,42 @@
     <script src="Scripts/angular.js" type="text/javascript"></script>
     <script type="text/javascript">
         /* client javascript code here */
-        angular.module('myApp', []).controller('contactListCtrl', function ($scope, $http) {
+        angular.module('myApp', []).controller('presidentListCtrl', function ($scope, $http) {
 
             $scope.refresh = function () {
-                $scope.status = "Refreshing Contacts...";
+                $scope.status = "Refreshing Presidents...";
                 $http({
                     method: 'GET',
-                    url: '/api/contacts',
+                    url: '/api/presidents',
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 }).then(function (results) {
-                    $scope.contacts = results.data;
-                    $scope.status = "Contacts loaded";
+                    $scope.presidents = results.data;
+                    $scope.status = "Presidents loaded";
                 }, function (err) {
-                    $scope.status = "Error loading contacts";
+                    $scope.status = "Error loading presidents";
                 });
             };
 
             $scope.create = function () {
-                $scope.status = "Creating a new contact";
+                $scope.status = "Creating a new president";
                 
                 $http({
                     method: 'POST',
-                    url: '/api/contacts',
+                    url: '/api/presidents',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     data: {
-                        'Id': $scope.newId,
                         'Name': $scope.newName,
-                        'EmailAddress': $scope.newEmail,
+                        'Birthday': $scope.newBirthday,
+                        'BirthPlace': $scope.newBirthPlace,
+                        'Age': $scope.newAge,
                         'CreatedBy': 'Guest'
                     }
                 }).success(function (data) {
-                    $scope.status = "Contact created";
+                    $scope.status = "President created";
                     $scope.refresh();
                     $scope.newId = 0;
                     $scope.newName = '';
@@ -116,12 +117,12 @@
             };
 
             $scope.delete = function (id) {
-                $scope.status = "Deleting contact";
+                $scope.status = "Deleting president";
                 $http({
                     method: 'DELETE',
-                    url: '/api/contacts/' + id
+                    url: '/api/presidents/' + id
                 }).success(function (data) {
-                    $scope.status = "Contact deleted";
+                    $scope.status = "President deleted";
                     $scope.refresh();
                 });
             };

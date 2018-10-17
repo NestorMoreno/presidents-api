@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace ContactsList.API
+namespace PresidentsList.API
 {
     public static class WebApiConfig
     {

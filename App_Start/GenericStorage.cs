@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using ContactsList.API.Models;
+using PresidentsList.API.Models;
 using Newtonsoft.Json;
 
-namespace ContactsList.API
+namespace PresidentsList.API
 {
     public class GenericStorage
     {
@@ -25,23 +25,23 @@ namespace ContactsList.API
             }
         }
 
-        public async Task<IEnumerable<Contact>> Save(IEnumerable<Contact> target, string filename)
+        public async Task<IEnumerable<President>> Save(IEnumerable<President> target, string filename)
         {
             var json = JsonConvert.SerializeObject(target);
             File.WriteAllText(_filePath + filename, json);
             return target;
         }
 
-        public async Task<IEnumerable<Contact>> Get(string filename)
+        public async Task<IEnumerable<President>> Get(string filename)
         {
-            var contactsText = String.Empty;
+            var presidentsText = String.Empty;
             if (File.Exists(_filePath + filename))
             {
-                contactsText = File.ReadAllText(_filePath + filename);
+                presidentsText = File.ReadAllText(_filePath + filename);
             }
 
-            var contacts = JsonConvert.DeserializeObject<Contact[]>(contactsText);
-            return contacts;
+            var presidents = JsonConvert.DeserializeObject<President[]>(presidentsText);
+            return presidents;
         }
     }
 }
